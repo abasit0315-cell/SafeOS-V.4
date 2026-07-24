@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#075a4b" />
+  <meta name="description" content="SafeOS Community is a free, local-first HSE management system for risks, incidents, inspections, actions, training, assets, compliance and analytics." />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="SafeOS Community — Free HSE Management System" />
+  <meta property="og:description" content="Manage practical HSE records, actions and performance without login, subscriptions or ads." />
+  <title>SafeOS Community — Free HSE Management System</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
+
+  <header class="topbar">
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open navigation" aria-expanded="false">☰</button>
+    <button class="brand" data-nav="home" aria-label="SafeOS Community home">
+      <span class="brand-mark">S</span>
+      <span class="brand-copy"><strong>SafeOS</strong><small>Community Edition</small></span>
+    </button>
+    <div class="top-actions">
+      <div class="global-search-wrap"><span aria-hidden="true">⌕</span><input id="globalSearch" type="search" placeholder="Search all SafeOS records…" autocomplete="off" /></div>
+      <span class="autosave-status" id="autosaveStatus" aria-live="polite">Local data ready</span>
+      <select id="languageSelect" aria-label="Language">
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+        <option value="ur">اردو</option>
+        <option value="hi">हिन्दी</option>
+        <option value="bn">বাংলা</option>
+      </select>
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle light and dark mode">◐</button>
+    </div>
+  </header>
+  <div class="search-results-panel" id="globalSearchResults" hidden></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+    <nav>
+      <div class="nav-group-label">OVERVIEW</div>
+      <button class="nav-link active" data-nav="home">🏠 <span>Welcome</span></button>
+      <button class="nav-link" data-nav="dashboard">📊 <span>Executive Dashboard</span></button>
+      <button class="nav-link" data-nav="projects">🏗️ <span>Projects & Sites</span></button>
+      <div class="nav-group-label">FIELD OPERATIONS</div>
+      <button class="nav-link" data-nav="risk">🧮 <span data-i18n="riskRegister">Risk Register</span></button>
+      <button class="nav-link" data-nav="jsa">🧰 <span data-i18n="jsaBuilder">JSA / TRA Builder</span></button>
+      <button class="nav-link" data-nav="incident">📝 <span data-i18n="incidentBuilder">Incident Report</span></button>
+      <button class="nav-link" data-nav="inspection">✅ <span>Inspections & Audits</span></button>
+      <button class="nav-link" data-nav="capa">📌 <span data-i18n="capa">Action Centre</span></button>
+      <button class="nav-link" data-nav="toolbox">👷 <span data-i18n="toolboxTalk">Toolbox Talk</span></button>
+      <div class="nav-group-label">ASSURANCE</div>
+      <button class="nav-link" data-nav="training">🎓 <span>Training & Competency</span></button>
+      <button class="nav-link" data-nav="assets">🚜 <span>Equipment & Permits</span></button>
+      <button class="nav-link" data-nav="emergency">🚨 <span>Emergency & Environment</span></button>
+      <button class="nav-link" data-nav="compliance">📚 <span>Documents & Legal</span></button>
+      <button class="nav-link" data-nav="analytics">📈 <span>Performance Analytics</span></button>
+      <button class="nav-link" data-nav="public">📱 <span>Public Reporting</span></button>
+      <button class="nav-link" data-nav="settings">⚙️ <span data-i18n="companySetup">Settings & Data</span></button>
+    </nav>
+    <div class="sidebar-note">
+      <strong data-i18n="privacyFirst">Privacy First</strong>
+      <p data-i18n="privacyNote">Records and uploaded logos stay in this browser unless you export a backup.</p>
+    </div>
+  </aside>
+
+  <main class="main" id="mainContent">
+    <section class="page active" id="page-home">
+      <div class="hero">
+        <div>
+          <span class="eyebrow">SAFEOS COMMUNITY 3.0</span>
+          <h1>One simple operating system for everyday HSE work.</h1>
+          <p>Manage risks, incidents, inspections, actions, training, equipment, compliance and performance dashboards directly in your browser.</p>
+          <div class="hero-actions">
+            <button class="primary" data-nav="dashboard">Open dashboard</button>
+            <button class="secondary" data-nav="settings" data-i18n="addCompanyLogo">Add company logo</button>
+          </div>
+          <div class="trust-row">
+            <span>✓ Local-first privacy</span><span>✓ PDF-ready reports</span><span>✓ Automatic filenames</span><span>✓ Offline capable</span>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="hero-stat"><strong>12+</strong><span>Connected modules</span></div>
+          <div class="hero-stat"><strong>0</strong><span data-i18n="loginRequired">Logins required</span></div>
+          <div class="hero-stat"><strong>Local</strong><span>Privacy-first storage</span></div>
+        </div>
+      </div>
+
+      <section class="dashboard-section">
+        <div class="section-heading">
+          <div><span class="eyebrow">LOCAL DASHBOARD</span><h2>Your records in this browser</h2></div>
+          <button class="secondary small" id="refreshDashboard">↻ Refresh</button>
+        </div>
+        <div class="dashboard-grid">
+          <button class="metric-card" data-nav="risk"><span>Risk assessments</span><strong id="dashRisks">0</strong><small>Saved registers</small></button>
+          <button class="metric-card" data-nav="jsa"><span>JSA / TRA</span><strong id="dashJsa">0</strong><small>Saved documents</small></button>
+          <button class="metric-card" data-nav="incident"><span>Incidents</span><strong id="dashIncidents">0</strong><small>Saved reports</small></button>
+          <button class="metric-card danger" data-nav="capa"><span>Overdue CAPA</span><strong id="dashOverdue">0</strong><small>Requires attention</small></button>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading"><div><span class="eyebrow" data-i18n="toolkit">TOOLKIT</span><h2 data-i18n="chooseTool">Choose a tool</h2></div></div>
+        <div class="tool-grid">
+          <article class="tool-card" data-nav="risk" tabindex="0"><span>🧮</span><h3 data-i18n="riskRegister">Risk Register</h3><p>Record hazards, affected persons, initial risk, further controls, owners, deadlines and residual risk.</p></article>
+          <article class="tool-card" data-nav="jsa" tabindex="0"><span>🧰</span><h3 data-i18n="jsaBuilder">JSA / TRA Builder</h3><p>Build step-by-step task risk assessments with initial and residual scoring.</p></article>
+          <article class="tool-card" data-nav="incident" tabindex="0"><span>📝</span><h3 data-i18n="incidentBuilder">Incident Report</h3><p>Document facts, people, impacts, evidence, causes, five whys and corrective actions.</p></article>
+          <article class="tool-card" data-nav="toolbox" tabindex="0"><span>👷</span><h3 data-i18n="toolboxTalk">Toolbox Talk</h3><p>Use ready topics, document learning points and maintain an attendance record.</p></article>
+          <article class="tool-card" data-nav="inspection" tabindex="0"><span>✅</span><h3 data-i18n="inspection">Inspection Checklist</h3><p>Use multiple templates, add custom items, score compliance and generate actions.</p></article>
+          <article class="tool-card" data-nav="capa" tabindex="0"><span>📌</span><h3>Action Centre</h3><p>Track ownership, priority, progress, overdue days, closure and effectiveness checks.</p></article>
+          <article class="tool-card" data-nav="training" tabindex="0"><span>🎓</span><h3>Training & Competency</h3><p>Monitor training delivery, attendance, competency status and upcoming expiry dates.</p></article>
+          <article class="tool-card" data-nav="assets" tabindex="0"><span>🚜</span><h3>Equipment & Permits</h3><p>Control equipment inspections, certificates and permit validity.</p></article>
+          <article class="tool-card" data-nav="emergency" tabindex="0"><span>🚨</span><h3>Emergency & Environment</h3><p>Evaluate drills and monitor water, energy, fuel, waste and spill performance.</p></article>
+          <article class="tool-card" data-nav="compliance" tabindex="0"><span>📚</span><h3>Documents & Legal</h3><p>Maintain controlled documents, legal obligations, reviews and evidence.</p></article>
+          <article class="tool-card" data-nav="public" tabindex="0"><span>📱</span><h3>Public Reporting</h3><p>Create a no-login mobile reporting link and QR poster for workers and the public.</p></article>
+          <article class="tool-card" data-nav="analytics" tabindex="0"><span>📈</span><h3>Analytics</h3><p>View trends, rates, leading indicators, lagging indicators and management alerts.</p></article>
+        </div>
+      </section>
+
+      <section class="creator-section" id="creatorSection">
+        <div class="creator-badge">FREE INITIATIVE</div>
+        <div class="creator-copy">
+          <h2>Created as a free safety initiative by Abdul Basit</h2>
+          <p>This platform was initiated to make practical HSE tools accessible to workers, supervisors, safety professionals and small organisations without login barriers, subscriptions or advertising.</p>
+          <div class="creator-links">
+            <a href="tel:+971525296903">📞 +971 52 529 6903</a>
+            <a href="mailto:abdulbasitsafety136@gmail.com">✉️ abdulbasitsafety136@gmail.com</a>
+            <a href="https://wa.me/971525296903" target="_blank" rel="noopener">💬 WhatsApp</a>
+          </div>
+          <small>Your contact details appear only on this main page and are excluded from user reports and PDF output.</small>
+        </div>
+      </section>
+    </section>
+
+    <section class="page" id="page-risk">
+      <div class="page-head">
+        <div><span class="eyebrow">HAZARD & RISK MANAGEMENT</span><h1 data-i18n="riskRegister">Risk Register</h1><p>Document a complete assessment with initial and residual risk.</p></div>
+        <div class="head-actions">
+          <button class="secondary" id="newRisk">＋ New</button>
+          <button class="secondary" id="saveRisk">💾 Save</button>
+          <button class="secondary" id="exportRiskCsv">⬇ CSV</button>
+          <button class="primary" data-print="risk">🖨 PDF / Print</button>
+        </div>
+      </div>
+      <div class="record-toolbar panel compact">
+        <label>Saved assessment
+          <select id="riskRecordSelect"><option value="">Current unsaved assessment</option></select>
+        </label>
+        <button class="secondary small" id="loadRisk">Load</button>
+        <button class="danger-btn small" id="deleteRisk">Delete selected</button>
+      </div>
+
+      <div class="panel form-grid four">
+        <label>Assessment reference<input id="riskRef" /></label>
+        <label>Assessment title<input id="riskTitle" placeholder="e.g. Working at height" /></label>
+        <label>Activity / task<input id="riskActivity" /></label>
+        <label>Location / site<input id="riskLocation" /></label>
+        <label>Assessment date<input type="date" id="riskDate" /></label>
+        <label>Review date<input type="date" id="riskReviewDate" /></label>
+        <label>Assessor<input id="riskAssessor" /></label>
+        <label>Approved by<input id="riskApprover" /></label>
+      </div>
+
+      <div class="panel form-grid two">
+        <label>Hazard description<textarea id="riskHazard" rows="4" placeholder="What could cause harm?"></textarea></label>
+        <label>Who might be harmed and how?<textarea id="riskAffected" rows="4" placeholder="Employees, contractors, visitors, public, vulnerable workers..."></textarea></label>
+        <label>Existing controls<textarea id="riskExistingControls" rows="5"></textarea></label>
+        <label>Further controls required<textarea id="riskFurtherControls" rows="5"></textarea></label>
+      </div>
+
+      <div class="risk-workbench">
+        <div class="panel">
+          <h3>Initial risk</h3>
+          <div class="form-grid two">
+            <label>Likelihood<select id="riskInitialL"></select></label>
+            <label>Severity<select id="riskInitialS"></select></label>
+          </div>
+          <div class="risk-result"><span id="riskInitialScore" class="risk-pill low">1 — Low</span><small id="riskInitialAction">Maintain controls and monitor.</small></div>
+        </div>
+        <div class="panel controls-panel">
+          <h3>Control action</h3>
+          <div class="form-grid two">
+            <label>Hierarchy of control<select id="riskHierarchy">
+              <option>Elimination</option><option>Substitution</option><option>Engineering control</option><option>Administrative control</option><option>PPE</option>
+            </select></label>
+            <label>Action owner<input id="riskOwner" /></label>
+            <label>Target date<input type="date" id="riskDue" /></label>
+            <label>Status<select id="riskStatus"><option>Open</option><option>In Progress</option><option>Implemented</option><option>Closed</option></select></label>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Residual risk</h3>
+          <div class="form-grid two">
+            <label>Likelihood<select id="riskResidualL"></select></label>
+            <label>Severity<select id="riskResidualS"></select></label>
+          </div>
+          <div class="risk-result"><span id="riskResidualScore" class="risk-pill low">1 — Low</span><small id="riskResidualAction">Maintain controls and monitor.</small></div>
+        </div>
+      </div>
+      <div class="panel">
+        <label>Monitoring, communication and review notes<textarea id="riskNotes" rows="4"></textarea></label>
+      </div>
+    </section>
+
+    <section class="page" id="page-jsa">
+      <div class="page-head">
+        <div><span class="eyebrow">TASK RISK ASSESSMENT</span><h1 data-i18n="jsaBuilder">JSA / TRA Builder</h1><p>Break work into steps, assess each hazard and verify residual risk.</p></div>
+        <div class="head-actions">
+          <button class="secondary" id="newJsa">＋ New</button><button class="secondary" id="saveJsa">💾 Save</button><button class="primary" data-print="jsa">🖨 PDF / Print</button>
+        </div>
+      </div>
+      <div class="record-toolbar panel compact">
+        <label>Saved JSA / TRA<select id="jsaRecordSelect"><option value="">Current unsaved document</option></select></label>
+        <button class="secondary small" id="loadJsa">Load</button><button class="danger-btn small" id="deleteJsa">Delete selected</button>
+      </div>
+      <div class="panel form-grid four">
+        <label>Document reference<input id="jsaRef" /></label><label>Project / site<input id="jsaProject" /></label>
+        <label>Activity / task<input id="jsaActivity" /></label><label>Specific location<input id="jsaLocation" /></label>
+        <label>Date<input type="date" id="jsaDate" /></label><label>Review date<input type="date" id="jsaReviewDate" /></label>
+        <label>Prepared by<input id="jsaPreparedBy" /></label><label>Approved by<input id="jsaApprovedBy" /></label>
+        <label>Permit / method statement ref<input id="jsaPermit" /></label><label>Required PPE<input id="jsaPpe" placeholder="Helmet, gloves, eye protection..." /></label>
+        <label class="span-2">Emergency arrangements<input id="jsaEmergency" placeholder="Rescue plan, first aid, emergency contact..." /></label>
+      </div>
+      <div class="table-wrap panel wide-table">
+        <table id="jsaTable">
+          <thead><tr><th>#</th><th>Job step</th><th>Hazard</th><th>Who/how harmed</th><th>Existing controls</th><th>Initial L</th><th>Initial S</th><th>Initial risk</th><th>Further controls</th><th>Hierarchy</th><th>Residual L</th><th>Residual S</th><th>Residual risk</th><th>Responsible</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <button class="secondary" id="addJsaRow">＋ Add job step</button>
+      </div>
+      <div class="panel form-grid two">
+        <label>Team consultation / briefing notes<textarea id="jsaConsultation" rows="4"></textarea></label>
+        <label>Overall remarks and restrictions<textarea id="jsaRemarks" rows="4"></textarea></label>
+      </div>
+    </section>
+
+    <section class="page" id="page-incident">
+      <div class="page-head">
+        <div><span class="eyebrow">FACT-BASED INVESTIGATION</span><h1 data-i18n="incidentBuilder">Incident Report</h1><p>Record evidence, identify systemic causes and assign preventive actions.</p></div>
+        <div class="head-actions"><button class="secondary" id="newIncident">＋ New</button><button class="secondary" id="saveIncident">💾 Save</button><button class="primary" data-print="incident">🖨 PDF / Print</button></div>
+      </div>
+      <div class="record-toolbar panel compact">
+        <label>Saved incident<select id="incidentRecordSelect"><option value="">Current unsaved report</option></select></label>
+        <button class="secondary small" id="loadIncident">Load</button><button class="danger-btn small" id="deleteIncident">Delete selected</button>
+      </div>
+      <div class="panel form-grid four">
+        <label>Incident reference<input id="incRef" /></label><label>Incident title<input id="incTitle" /></label>
+        <label>Incident type<select id="incType"><option>Near Miss</option><option>First Aid Case</option><option>Medical Treatment Case</option><option>Restricted Work Case</option><option>Lost Time Injury</option><option>Occupational Illness</option><option>Property Damage</option><option>Environmental Incident</option><option>Fire / Explosion</option><option>Vehicle / Mobile Plant Incident</option><option>Security / Violence</option></select></label>
+        <label>Potential / actual severity<select id="incSeverity"><option>Low</option><option>Moderate</option><option>High</option><option>Critical</option><option>Fatal / Catastrophic</option></select></label>
+        <label>Date<input type="date" id="incDate" /></label><label>Time<input type="time" id="incTime" /></label>
+        <label>Location<input id="incLocation" /></label><label>Report status<select id="incStatus"><option>Initial</option><option>Under Investigation</option><option>Actions Open</option><option>Closed</option></select></label>
+        <label>Reported by<input id="incReporter" /></label><label>Investigation lead<input id="incLead" /></label>
+        <label>Person(s) involved<input id="incPersons" /></label><label>Witnesses<input id="incWitnesses" /></label>
+      </div>
+      <div class="panel form-grid two">
+        <label>Incident description<textarea id="incDescription" rows="6" placeholder="Describe what happened before, during and immediately after."></textarea></label>
+        <label>Injury, damage or environmental impact<textarea id="incImpact" rows="6"></textarea></label>
+        <label>Immediate actions and scene controls<textarea id="incImmediate" rows="5"></textarea></label>
+        <label>Equipment, material and work conditions<textarea id="incConditions" rows="5"></textarea></label>
+      </div>
+      <div class="panel">
+        <h3>Evidence images</h3>
+        <p class="helper">Up to 3 compressed images are stored only in this browser and placed in the printed report.</p>
+        <input type="file" id="incImages" accept="image/*" multiple />
+        <div class="image-preview-grid" id="incImagePreview"></div>
+      </div>
+      <div class="panel">
+        <h3>Cause analysis</h3>
+        <div class="form-grid three">
+          <label>Immediate cause category<select id="incImmediateCategory"><option>Unsafe condition</option><option>Unsafe act / behaviour</option><option>Equipment failure</option><option>Environmental condition</option><option>Process deviation</option><option>Other</option></select></label>
+          <label>Root cause category<select id="incRootCategory"><option>Management system</option><option>Planning / risk assessment</option><option>Procedure / method</option><option>Training / competence</option><option>Supervision</option><option>Maintenance / inspection</option><option>Design / engineering</option><option>Communication</option><option>Procurement / contractor control</option><option>Human factors / fatigue</option><option>Other</option></select></label>
+          <label>Regulatory notification required?<select id="incReportable"><option>To be assessed</option><option>No</option><option>Yes</option></select></label>
+        </div>
+        <div class="five-whys">
+          <label>Why 1<input id="incWhy1" /></label><label>Why 2<input id="incWhy2" /></label><label>Why 3<input id="incWhy3" /></label><label>Why 4<input id="incWhy4" /></label><label>Why 5 / root cause<input id="incWhy5" /></label>
+        </div>
+        <label>Root and contributing causes<textarea id="incCauses" rows="5"></textarea></label>
+      </div>
+      <div class="panel form-grid two">
+        <label>Corrective and preventive actions<textarea id="incActions" rows="5"></textarea></label>
+        <label>Lessons learned and communication required<textarea id="incLessons" rows="5"></textarea></label>
+        <label>Action owner<input id="incActionOwner" /></label><label>Target completion date<input type="date" id="incActionDue" /></label>
+      </div>
+      <div class="inline-actions">
+        <button class="secondary" id="sendIncidentToCapa">Create CAPA from this incident</button>
+      </div>
+    </section>
+
+    <section class="page" id="page-toolbox">
+      <div class="page-head">
+        <div><span class="eyebrow">SAFETY COMMUNICATION</span><h1 data-i18n="toolboxTalk">Toolbox Talk</h1><p>Prepare a focused briefing and maintain an attendance record.</p></div>
+        <div class="head-actions"><button class="secondary" id="newToolbox">＋ New</button><button class="secondary" id="saveToolbox">💾 Save</button><button class="primary" data-print="toolbox">🖨 PDF / Print</button></div>
+      </div>
+      <div class="record-toolbar panel compact">
+        <label>Saved toolbox talk<select id="toolboxRecordSelect"><option value="">Current unsaved talk</option></select></label>
+        <button class="secondary small" id="loadToolbox">Load</button><button class="danger-btn small" id="deleteToolbox">Delete selected</button>
+      </div>
+      <div class="panel form-grid four">
+        <label>Talk reference<input id="tbRef" /></label>
+        <label>Ready topic<select id="tbTemplate"><option value="">Custom topic</option><option>Working at Height</option><option>Heat Stress</option><option>Manual Handling</option><option>Electrical Safety</option><option>Excavation Safety</option><option>Housekeeping</option><option>PPE</option><option>Vehicle and Plant Safety</option><option>Fire and Emergency Response</option><option>Labour Camp Hygiene</option><option>Food Safety</option><option>Behaviour and Workplace Violence</option></select></label>
+        <label>Topic<input id="tbTopic" /></label><label>Project / site<input id="tbSite" /></label>
+        <label>Date<input type="date" id="tbDate" /></label><label>Start time<input type="time" id="tbTime" /></label>
+        <label>Duration (minutes)<input type="number" min="1" id="tbDuration" value="15" /></label><label>Presenter<input id="tbPresenter" /></label>
+        <label>Language<select id="tbLanguage"><option>English</option><option>Arabic</option><option>Urdu</option><option>Hindi</option><option>Bengali</option><option>Other / multilingual</option></select></label>
+        <label>Required PPE<input id="tbPpe" /></label>
+      </div>
+      <div class="panel form-grid two">
+        <label>Objective<textarea id="tbObjective" rows="4"></textarea></label>
+        <label>Hazards and consequences<textarea id="tbHazards" rows="4"></textarea></label>
+        <label>Key controls / discussion points<textarea id="tbPoints" rows="7"></textarea></label>
+        <label>Emergency arrangements and stop-work triggers<textarea id="tbEmergency" rows="7"></textarea></label>
+        <label>Questions and worker feedback<textarea id="tbFeedback" rows="4"></textarea></label>
+        <label>Presenter observations / follow-up<textarea id="tbFollowup" rows="4"></textarea></label>
+      </div>
+      <div class="table-wrap panel">
+        <table id="attendanceTable"><thead><tr><th>#</th><th>Name</th><th>Employee ID</th><th>Company / trade</th><th>Signature / confirmation</th><th></th></tr></thead><tbody></tbody></table>
+        <button class="secondary" id="addAttendee">＋ Add attendee</button>
+      </div>
+    </section>
+
+    <section class="page" id="page-inspection">
+      <div class="page-head">
+        <div><span class="eyebrow">COMPLIANCE & FIELD VERIFICATION</span><h1 data-i18n="inspection">Inspection Checklist</h1><p>Use a template or create a custom checklist with accountable actions.</p></div>
+        <div class="head-actions"><button class="secondary" id="newInspection">＋ New</button><button class="secondary" id="saveInspection">💾 Save</button><button class="secondary" id="exportInspection">⬇ CSV</button><button class="primary" data-print="inspection">🖨 PDF / Print</button></div>
+      </div>
+      <div class="record-toolbar panel compact">
+        <label>Saved inspection<select id="inspectionRecordSelect"><option value="">Current unsaved inspection</option></select></label>
+        <button class="secondary small" id="loadInspection">Load</button><button class="danger-btn small" id="deleteInspection">Delete selected</button>
+      </div>
+      <div class="panel form-grid four">
+        <label>Inspection reference<input id="inspectionRef" /></label>
+        <label>Template<select id="inspectionTemplate">
+          <option value="camp">Labour Camp — General</option><option value="accommodation">Accommodation & Welfare</option><option value="kitchen">Kitchen & Food Hygiene</option><option value="site">Construction Site</option><option value="vehicle">Vehicle / Machinery</option><option value="fire">Fire Safety</option><option value="electrical">Electrical Safety</option><option value="environment">Environmental</option><option value="custom">Custom Blank Checklist</option>
+        </select></label>
+        <label>Project / site<input id="inspectionSite" /></label><label>Area / department<input id="inspectionArea" /></label>
+        <label>Date<input type="date" id="inspectionDate" /></label><label>Inspector<input id="inspectionInspector" /></label>
+        <label>Accompanied by<input id="inspectionAccompanied" /></label><label>Overall status<select id="inspectionOverall"><option>Satisfactory</option><option>Needs Improvement</option><option>Unsatisfactory</option><option>Immediate Action Required</option></select></label>
+      </div>
+      <div class="score-strip four">
+        <div><span>Compliance score</span><strong id="inspectionScore">0%</strong></div>
+        <div><span>Compliant</span><strong id="inspectionCompliant">0</strong></div>
+        <div><span>Non-compliant</span><strong id="openFindings">0</strong></div>
+        <div><span>Unassessed</span><strong id="inspectionUnassessed">0</strong></div>
+      </div>
+      <div class="table-wrap panel inspection-wrap">
+        <table id="inspectionTable"><thead><tr><th>#</th><th>Inspection item</th><th>Status</th><th>Risk</th><th>Observation / evidence</th><th>Required action</th><th>Responsible</th><th>Due date</th><th></th></tr></thead><tbody></tbody></table>
+        <button class="secondary" id="addInspectionItem">＋ Add custom item</button>
+      </div>
+      <div class="panel"><label>Inspection summary and positive observations<textarea id="inspectionSummary" rows="5"></textarea></label></div>
+      <div class="inline-actions"><button class="secondary" id="createCapaFromInspection">Create CAPA for non-compliant items</button></div>
+    </section>
+
+    <section class="page" id="page-capa">
+      <div class="page-head">
+        <div><span class="eyebrow">ACTION MANAGEMENT</span><h1 data-i18n="capa">CAPA Tracker</h1><p>Track actions from identification through effectiveness verification.</p></div>
+        <div class="head-actions"><button class="secondary" id="exportCapa">⬇ CSV</button><button class="primary" data-print="capa">🖨 PDF / Print</button></div>
+      </div>
+      <div class="score-strip four">
+        <div><span>Total actions</span><strong id="capaTotal">0</strong></div><div><span>Overdue</span><strong id="capaOverdue">0</strong></div>
+        <div><span>Completed</span><strong id="capaCompleted">0</strong></div><div><span>Effectiveness verified</span><strong id="capaVerified">0</strong></div>
+      </div>
+      <div class="panel">
+        <h3 id="capaFormTitle">Add corrective / preventive action</h3>
+        <input type="hidden" id="capaEditId" />
+        <div class="form-grid four">
+          <label>Action ID<input id="capaId" /></label>
+          <label>Source<select id="capaSource"><option>Inspection</option><option>Incident</option><option>Risk Assessment</option><option>Audit</option><option>Observation</option><option>Complaint</option><option>Management Review</option><option>Other</option></select></label>
+          <label>Category<select id="capaCategory"><option>Unsafe condition</option><option>Unsafe act / behaviour</option><option>Procedure / documentation</option><option>Training / competence</option><option>Equipment / maintenance</option><option>Fire safety</option><option>Electrical safety</option><option>Welfare / hygiene</option><option>Environmental</option><option>Management system</option><option>Other</option></select></label>
+          <label>Priority<select id="capaPriority"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></label>
+          <label class="span-2">Finding / root cause<textarea id="capaFinding" rows="3"></textarea></label>
+          <label class="span-2">Required action<textarea id="capaAction" rows="3"></textarea></label>
+          <label>Responsible person<input id="capaResponsible" /></label><label>Department / contractor<input id="capaDepartment" /></label>
+          <label>Date opened<input type="date" id="capaOpened" /></label><label>Due date<input type="date" id="capaDue" /></label>
+          <label>Status<select id="capaStatus"><option>Open</option><option>In Progress</option><option>Pending Verification</option><option>Completed</option><option>Closed</option><option>On Hold</option></select></label>
+          <label>Progress %<input type="number" min="0" max="100" id="capaProgress" value="0" /></label>
+          <label>Completion date<input type="date" id="capaCompletedDate" /></label><label>Verified by<input id="capaVerifiedBy" /></label>
+          <label>Verification date<input type="date" id="capaVerifiedDate" /></label>
+          <label>Effectiveness<select id="capaEffectiveness"><option>Not verified</option><option>Effective</option><option>Partially effective</option><option>Ineffective — reopen</option></select></label>
+          <label class="span-4">Closure evidence / effectiveness notes<textarea id="capaClosure" rows="3"></textarea></label>
+        </div>
+        <div class="inline-actions"><button class="primary" id="saveCapaAction">Save action</button><button class="secondary hidden" id="cancelCapaEdit">Cancel edit</button></div>
+      </div>
+      <div class="panel filter-bar">
+        <input id="capaSearch" type="search" placeholder="Search actions, owners or departments..." />
+        <select id="capaFilterStatus"><option value="">All statuses</option><option>Open</option><option>In Progress</option><option>Pending Verification</option><option>Completed</option><option>Closed</option><option>On Hold</option></select>
+        <select id="capaFilterPriority"><option value="">All priorities</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
+        <label class="checkbox-inline"><input type="checkbox" id="capaOnlyOverdue" /> Overdue only</label>
+      </div>
+      <div class="table-wrap panel">
+        <table id="capaTable"><thead><tr><th>#</th><th>ID / source</th><th>Action</th><th>Responsible</th><th>Due</th><th>Priority</th><th>Status</th><th>Progress</th><th>Effectiveness</th><th>Manage</th></tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+
+    <section class="page" id="page-dashboard">
+      <div class="page-head">
+        <div><span class="eyebrow">MANAGEMENT OVERVIEW</span><h1>Executive HSE Dashboard</h1><p>See leading indicators, lagging indicators, overdue obligations and data-quality gaps across all local SafeOS records.</p></div>
+        <div class="head-actions"><button class="secondary" id="refreshSafeosDashboard">↻ Refresh</button><button class="primary" data-print-ext="dashboard">🖨 PDF / Print</button></div>
+      </div>
+      <div class="dashboard-grid dashboard-grid-8">
+        <button class="metric-card" data-nav="incident"><span>Total incidents</span><strong id="kpiIncidents">0</strong><small id="kpiIncidentsSub">No records</small></button>
+        <button class="metric-card warning" data-nav="risk"><span>High / critical risks</span><strong id="kpiHighRisks">0</strong><small>Open residual risks</small></button>
+        <button class="metric-card danger" data-nav="capa"><span>Overdue actions</span><strong id="kpiOverdueActions">0</strong><small>Past due and not closed</small></button>
+        <button class="metric-card warning" data-nav="training"><span>Training due</span><strong id="kpiTrainingDue">0</strong><small>Expired or within alert window</small></button>
+        <button class="metric-card warning" data-nav="assets"><span>Certificates due</span><strong id="kpiAssetsDue">0</strong><small>Inspection or certificate expiry</small></button>
+        <button class="metric-card" data-nav="inspection"><span>Inspection compliance</span><strong id="kpiCompliance">0%</strong><small>Average saved score</small></button>
+        <button class="metric-card" data-nav="public"><span>Public reports open</span><strong id="kpiPublicOpen">0</strong><small>Awaiting assessment</small></button>
+        <button class="metric-card" data-nav="analytics"><span>System health</span><strong id="kpiSystemHealth">0%</strong><small>Management-system completeness</small></button>
+      </div>
+
+      <div class="analytics-grid">
+        <section class="panel chart-panel"><div class="panel-title-row"><div><h2>Incident trend</h2><p>Last 12 months</p></div></div><div id="chartIncidentTrend" class="chart-box empty-chart">No incident data</div></section>
+        <section class="panel chart-panel"><div class="panel-title-row"><div><h2>Action status</h2><p>Corrective and preventive actions</p></div></div><div id="chartActionStatus" class="chart-box empty-chart">No action data</div></section>
+        <section class="panel chart-panel"><div class="panel-title-row"><div><h2>Risk profile</h2><p>Residual risk distribution</p></div></div><div id="chartRiskProfile" class="chart-box empty-chart">No risk data</div></section>
+        <section class="panel chart-panel"><div class="panel-title-row"><div><h2>Inspection performance</h2><p>Most recent inspections</p></div></div><div id="chartInspectionTrend" class="chart-box empty-chart">No inspection data</div></section>
+      </div>
+
+      <div class="two-col dashboard-lower">
+        <section class="panel">
+          <div class="panel-title-row"><div><h2>Priority alerts</h2><p>Items requiring timely attention</p></div><span class="status-chip" id="alertCountChip">0 alerts</span></div>
+          <div id="priorityAlerts" class="alert-list"><div class="empty-state">No alerts yet.</div></div>
+        </section>
+        <section class="panel">
+          <div class="panel-title-row"><div><h2>Management-system health</h2><p>Practical readiness against essential HSE system elements</p></div><strong class="health-score" id="systemHealthScore">0%</strong></div>
+          <div class="health-meter"><i id="systemHealthBar"></i></div>
+          <div id="systemHealthChecks" class="health-checks"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="page" id="page-projects">
+      <div class="page-head"><div><span class="eyebrow">ORGANISATIONAL CONTEXT</span><h1>Projects & Sites</h1><p>Build a common project and site structure so every record can be filtered and assigned correctly.</p></div><div class="head-actions"><button class="secondary" data-export-registry="projects">⬇ CSV</button><button class="primary" data-print-ext="projects">🖨 PDF / Print</button></div></div>
+      <div class="score-strip four"><div><span>Total projects</span><strong id="projectTotal">0</strong></div><div><span>Active</span><strong id="projectActive">0</strong></div><div><span>Total workforce</span><strong id="projectWorkforce">0</strong></div><div><span>Closing within 60 days</span><strong id="projectClosing">0</strong></div></div>
+      <section class="panel"><h2 id="projectFormTitle">Add project / site</h2><input type="hidden" id="projEditId" /><div class="form-grid four">
+        <label>Project code<input id="projCode" /></label><label>Project / site name<input id="projName" /></label><label>Client / business unit<input id="projClient" /></label><label>Location<input id="projLocation" /></label>
+        <label>Project manager<input id="projManager" /></label><label>HSE lead<input id="projHseLead" /></label><label>Workforce<input id="projWorkforce" type="number" min="0" /></label><label>Status<select id="projStatus"><option>Planned</option><option>Active</option><option>On Hold</option><option>Closing</option><option>Completed</option></select></label>
+        <label>Start date<input id="projStart" type="date" /></label><label>Expected end date<input id="projEnd" type="date" /></label><label class="span-2">Scope / notes<input id="projScope" /></label>
+      </div><div class="inline-actions"><button class="primary" id="saveProject">Save project</button><button class="secondary hidden" id="cancelProjectEdit">Cancel edit</button></div></section>
+      <div class="panel filter-bar"><input id="projectSearch" type="search" placeholder="Search projects, managers or locations…" /><select id="projectFilterStatus"><option value="">All statuses</option><option>Planned</option><option>Active</option><option>On Hold</option><option>Closing</option><option>Completed</option></select></div>
+      <div class="table-wrap panel"><table><thead><tr><th>#</th><th>Code / project</th><th>Location</th><th>Client</th><th>Management</th><th>Workforce</th><th>Dates</th><th>Status</th><th>Manage</th></tr></thead><tbody id="projectTableBody"></tbody></table></div>
+    </section>
+
+    <section class="page" id="page-training">
+      <div class="page-head"><div><span class="eyebrow">COMPETENCE & AWARENESS</span><h1>Training & Competency</h1><p>Track planned and completed training, competency verification and expiry alerts.</p></div><div class="head-actions"><button class="secondary" data-export-registry="training">⬇ CSV</button><button class="primary" data-print-ext="training">🖨 PDF / Print</button></div></div>
+      <div class="score-strip four"><div><span>Training records</span><strong id="trainingTotal">0</strong></div><div><span>People planned</span><strong id="trainingPlannedTotal">0</strong></div><div><span>People attended</span><strong id="trainingAttendedTotal">0</strong></div><div><span>Expired / due soon</span><strong id="trainingDue">0</strong></div></div>
+      <section class="panel"><h2 id="trainingFormTitle">Add training record</h2><input type="hidden" id="trainingEditId" /><div class="form-grid four">
+        <label>Reference<input id="trainingRef" /></label><label>Topic / course<input id="trainingTopic" /></label><label>Type<select id="trainingType"><option>Induction</option><option>Toolbox Talk</option><option>Internal Training</option><option>External Training</option><option>Competency Assessment</option><option>Emergency Drill Briefing</option></select></label><label>Project / site<input id="trainingSite" /></label>
+        <label>Training date<input id="trainingDate" type="date" /></label><label>Expiry / refresher date<input id="trainingExpiry" type="date" /></label><label>Trainer / provider<input id="trainingTrainer" /></label><label>Status<select id="trainingStatus"><option>Planned</option><option>Completed</option><option>Partially Completed</option><option>Cancelled</option><option>Expired</option></select></label>
+        <label>People planned<input id="trainingPlanned" type="number" min="0" /></label><label>People attended<input id="trainingAttendees" type="number" min="0" /></label><label>Assessment result<select id="trainingResult"><option>Not Assessed</option><option>Competent</option><option>Needs Improvement</option><option>Not Competent</option></select></label><label>Evidence / certificate ref<input id="trainingEvidence" /></label>
+      </div><div class="inline-actions"><button class="primary" id="saveTraining">Save training</button><button class="secondary hidden" id="cancelTrainingEdit">Cancel edit</button></div></section>
+      <div class="panel filter-bar"><input id="trainingSearch" type="search" placeholder="Search course, site, trainer or evidence…" /><select id="trainingFilterStatus"><option value="">All statuses</option><option>Planned</option><option>Completed</option><option>Partially Completed</option><option>Cancelled</option><option>Expired</option></select><label class="checkbox-inline"><input id="trainingOnlyDue" type="checkbox" /> Due / expired only</label></div>
+      <div class="table-wrap panel"><table><thead><tr><th>#</th><th>Reference / topic</th><th>Type / site</th><th>Date / expiry</th><th>Planned</th><th>Attended</th><th>Result</th><th>Status</th><th>Manage</th></tr></thead><tbody id="trainingTableBody"></tbody></table></div>
+    </section>
+
+    <section class="page" id="page-assets">
+      <div class="page-head"><div><span class="eyebrow">OPERATIONAL CONTROL</span><h1>Equipment, Certificates & Permits</h1><p>Monitor safety-critical equipment, statutory inspections, certificates and permit validity.</p></div><div class="head-actions"><button class="secondary" data-export-registry="assets">⬇ Equipment CSV</button><button class="secondary" data-export-registry="permits">⬇ Permits CSV</button><button class="primary" data-print-ext="assets">🖨 PDF / Print</button></div></div>
+      <div class="score-strip four"><div><span>Equipment records</span><strong id="assetTotal">0</strong></div><div><span>Equipment due / expired</span><strong id="assetDue">0</strong></div><div><span>Open permits</span><strong id="permitOpen">0</strong></div><div><span>Permits expired</span><strong id="permitExpired">0</strong></div></div>
+      <div class="two-col align-start">
+        <section class="panel"><h2 id="assetFormTitle">Add equipment / certificate</h2><input type="hidden" id="assetEditId" /><div class="form-grid two">
+          <label>Asset reference<input id="assetRef" /></label><label>Category<select id="assetCategory"><option>Heavy Equipment</option><option>Vehicle</option><option>Lifting Equipment</option><option>Power Tool</option><option>Fire Equipment</option><option>Pressure Equipment</option><option>Electrical Equipment</option><option>Other</option></select></label>
+          <label>Description<input id="assetDescription" /></label><label>Serial / registration<input id="assetSerial" /></label><label>Project / site<input id="assetSite" /></label><label>Owner / custodian<input id="assetOwner" /></label>
+          <label>Inspection due<input id="assetInspectionDue" type="date" /></label><label>Certificate expiry<input id="assetCertificateDue" type="date" /></label><label>Status<select id="assetStatus"><option>In Service</option><option>Out of Service</option><option>Under Maintenance</option><option>Quarantined</option><option>Disposed</option></select></label><label>Certificate / evidence ref<input id="assetEvidence" /></label>
+        </div><div class="inline-actions"><button class="primary" id="saveAsset">Save equipment</button><button class="secondary hidden" id="cancelAssetEdit">Cancel edit</button></div></section>
+        <section class="panel"><h2 id="permitFormTitle">Add permit to work</h2><input type="hidden" id="permitEditId" /><div class="form-grid two">
+          <label>Permit reference<input id="permitRef" /></label><label>Permit type<select id="permitType"><option>Hot Work</option><option>Confined Space</option><option>Excavation</option><option>Electrical Isolation / LOTO</option><option>Work at Height</option><option>Lifting Operation</option><option>Line Breaking</option><option>General Permit</option></select></label>
+          <label>Project / site<input id="permitSite" /></label><label>Area / equipment<input id="permitArea" /></label><label>Issuer<input id="permitIssuer" /></label><label>Receiver / performing authority<input id="permitReceiver" /></label>
+          <label>Issue date / time<input id="permitIssue" type="datetime-local" /></label><label>Valid until<input id="permitExpiry" type="datetime-local" /></label><label>Status<select id="permitStatus"><option>Draft</option><option>Active</option><option>Suspended</option><option>Closed</option><option>Cancelled</option></select></label><label>Isolation / certificate ref<input id="permitEvidence" /></label>
+        </div><div class="inline-actions"><button class="primary" id="savePermit">Save permit</button><button class="secondary hidden" id="cancelPermitEdit">Cancel edit</button></div></section>
+      </div>
+      <h2 class="subpage-title">Equipment register</h2><div class="table-wrap panel"><table><thead><tr><th>#</th><th>Reference / asset</th><th>Serial / site</th><th>Inspection due</th><th>Certificate expiry</th><th>Status</th><th>Evidence</th><th>Manage</th></tr></thead><tbody id="assetTableBody"></tbody></table></div>
+      <h2 class="subpage-title">Permit register</h2><div class="table-wrap panel"><table><thead><tr><th>#</th><th>Permit / type</th><th>Site / area</th><th>Issuer / receiver</th><th>Validity</th><th>Status</th><th>Manage</th></tr></thead><tbody id="permitTableBody"></tbody></table></div>
+    </section>
+
+    <section class="page" id="page-emergency">
+      <div class="page-head"><div><span class="eyebrow">PREPAREDNESS & ENVIRONMENT</span><h1>Emergency Drills & Environmental Performance</h1><p>Evaluate emergency readiness and monitor practical environmental indicators.</p></div><div class="head-actions"><button class="secondary" data-export-registry="drills">⬇ Drills CSV</button><button class="secondary" data-export-registry="environment">⬇ Environment CSV</button><button class="primary" data-print-ext="emergency">🖨 PDF / Print</button></div></div>
+      <div class="score-strip four"><div><span>Drills conducted</span><strong id="drillTotal">0</strong></div><div><span>Average drill score</span><strong id="drillAverage">0%</strong></div><div><span>Environmental months</span><strong id="envTotal">0</strong></div><div><span>Recycling rate</span><strong id="envRecycleRate">0%</strong></div></div>
+      <div class="two-col align-start">
+        <section class="panel"><h2 id="drillFormTitle">Add emergency drill</h2><input type="hidden" id="drillEditId" /><div class="form-grid two">
+          <label>Drill reference<input id="drillRef" /></label><label>Type<select id="drillType"><option>Fire / Evacuation</option><option>Medical Emergency</option><option>Spill Response</option><option>Confined Space Rescue</option><option>Work at Height Rescue</option><option>Vehicle Incident</option><option>Security / Violence</option><option>Other</option></select></label>
+          <label>Project / site<input id="drillSite" /></label><label>Date<input id="drillDate" type="date" /></label><label>Response / evacuation time (min)<input id="drillResponse" type="number" min="0" step="0.1" /></label><label>Participants<input id="drillParticipants" type="number" min="0" /></label>
+          <label>Score %<input id="drillScore" type="number" min="0" max="100" /></label><label>Status<select id="drillStatus"><option>Satisfactory</option><option>Needs Improvement</option><option>Unsatisfactory</option><option>Actions Open</option><option>Closed</option></select></label><label class="span-2">Findings and learning<textarea id="drillFindings" rows="4"></textarea></label>
+        </div><div class="inline-actions"><button class="primary" id="saveDrill">Save drill</button><button class="secondary hidden" id="cancelDrillEdit">Cancel edit</button></div></section>
+        <section class="panel"><h2 id="envFormTitle">Add monthly environmental data</h2><input type="hidden" id="envEditId" /><div class="form-grid two">
+          <label>Month<input id="envMonth" type="month" /></label><label>Project / site<input id="envSite" /></label><label>Water consumption (m³)<input id="envWater" type="number" min="0" step="0.01" /></label><label>Electricity (kWh)<input id="envElectricity" type="number" min="0" step="0.01" /></label>
+          <label>Fuel consumption (L)<input id="envFuel" type="number" min="0" step="0.01" /></label><label>Total waste (kg)<input id="envWaste" type="number" min="0" step="0.01" /></label><label>Recycled waste (kg)<input id="envRecycled" type="number" min="0" step="0.01" /></label><label>Spills / releases<input id="envSpills" type="number" min="0" /></label>
+        </div><div class="inline-actions"><button class="primary" id="saveEnvironment">Save environmental data</button><button class="secondary hidden" id="cancelEnvironmentEdit">Cancel edit</button></div></section>
+      </div>
+      <h2 class="subpage-title">Emergency drill register</h2><div class="table-wrap panel"><table><thead><tr><th>#</th><th>Reference / type</th><th>Site / date</th><th>Response time</th><th>Participants</th><th>Score</th><th>Status / findings</th><th>Manage</th></tr></thead><tbody id="drillTableBody"></tbody></table></div>
+      <h2 class="subpage-title">Environmental performance</h2><div class="table-wrap panel"><table><thead><tr><th>#</th><th>Month / site</th><th>Water</th><th>Electricity</th><th>Fuel</th><th>Waste</th><th>Recycled</th><th>Rate</th><th>Spills</th><th>Manage</th></tr></thead><tbody id="environmentTableBody"></tbody></table></div>
+    </section>
+
+    <section class="page" id="page-compliance">
+      <div class="page-head"><div><span class="eyebrow">DOCUMENTED INFORMATION & COMPLIANCE</span><h1>Controlled Documents & Legal Register</h1><p>Track ownership, revision, review dates, legal duties and evidence of compliance.</p></div><div class="head-actions"><button class="secondary" data-export-registry="documents">⬇ Documents CSV</button><button class="secondary" data-export-registry="legal">⬇ Legal CSV</button><button class="primary" data-print-ext="compliance">🖨 PDF / Print</button></div></div>
+      <div class="score-strip four"><div><span>Controlled documents</span><strong id="documentTotal">0</strong></div><div><span>Documents due</span><strong id="documentDue">0</strong></div><div><span>Legal obligations</span><strong id="legalTotal">0</strong></div><div><span>Legal reviews due</span><strong id="legalDue">0</strong></div></div>
+      <div class="two-col align-start">
+        <section class="panel"><h2 id="documentFormTitle">Add controlled document</h2><input type="hidden" id="docEditId" /><div class="form-grid two">
+          <label>Document reference<input id="docRef" /></label><label>Title<input id="docTitle" /></label><label>Type<select id="docType"><option>Policy</option><option>HSE Plan</option><option>Procedure / SOP</option><option>Method Statement</option><option>Form / Checklist</option><option>Emergency Plan</option><option>Manual</option><option>Other</option></select></label><label>Revision<input id="docRevision" /></label>
+          <label>Owner<input id="docOwner" /></label><label>Issue date<input id="docIssue" type="date" /></label><label>Review date<input id="docReview" type="date" /></label><label>Status<select id="docStatus"><option>Draft</option><option>Approved</option><option>Under Review</option><option>Superseded</option><option>Archived</option></select></label><label class="span-2">File location / link / notes<input id="docLocation" /></label>
+        </div><div class="inline-actions"><button class="primary" id="saveDocument">Save document</button><button class="secondary hidden" id="cancelDocumentEdit">Cancel edit</button></div></section>
+        <section class="panel"><h2 id="legalFormTitle">Add legal / other obligation</h2><input type="hidden" id="legalEditId" /><div class="form-grid two">
+          <label>Country / jurisdiction<input id="legalJurisdiction" /></label><label>Authority / source<input id="legalAuthority" /></label><label class="span-2">Requirement / obligation<textarea id="legalObligation" rows="4"></textarea></label><label>Responsible owner<input id="legalOwner" /></label><label>Evidence / record<input id="legalEvidence" /></label><label>Review date<input id="legalReview" type="date" /></label><label>Compliance status<select id="legalStatus"><option>Compliant</option><option>Partially Compliant</option><option>Non-Compliant</option><option>Not Assessed</option><option>Not Applicable</option></select></label>
+        </div><div class="inline-actions"><button class="primary" id="saveLegal">Save obligation</button><button class="secondary hidden" id="cancelLegalEdit">Cancel edit</button></div></section>
+      </div>
+      <h2 class="subpage-title">Controlled document register</h2><div class="table-wrap panel"><table><thead><tr><th>#</th><th>Reference / title</th><th>Type / revision</th><th>Owner</th><th>Issue / review</th><th>Status</th><th>Location / notes</th><th>Manage</th></tr></thead><tbody id="documentTableBody"></tbody></table></div>
+      <h2 class="subpage-title">Legal and other obligations</h2><div class="table-wrap panel"><table><thead><tr><th>#</th><th>Jurisdiction / authority</th><th>Requirement</th><th>Owner</th><th>Evidence</th><th>Review</th><th>Status</th><th>Manage</th></tr></thead><tbody id="legalTableBody"></tbody></table></div>
+    </section>
+
+    <section class="page" id="page-analytics">
+      <div class="page-head"><div><span class="eyebrow">PERFORMANCE EVALUATION</span><h1>HSE Performance Analytics</h1><p>Record monthly exposure data and analyse leading and lagging indicators with configurable rate calculations.</p></div><div class="head-actions"><button class="secondary" data-export-registry="performance">⬇ Performance CSV</button><button class="primary" data-print-ext="analytics">🖨 PDF / Print</button></div></div>
+      <section class="panel"><h2 id="performanceFormTitle">Add monthly performance data</h2><input type="hidden" id="perfEditId" /><div class="form-grid four">
+        <label>Month<input id="perfMonth" type="month" /></label><label>Project / site<input id="perfSite" /></label><label>Hours worked<input id="perfHours" type="number" min="0" /></label><label>Average workforce<input id="perfWorkforce" type="number" min="0" /></label>
+        <label>Recordable cases<input id="perfRecordables" type="number" min="0" /></label><label>Lost-time injuries<input id="perfLti" type="number" min="0" /></label><label>Lost workdays<input id="perfLostDays" type="number" min="0" /></label><label>Near misses<input id="perfNearMisses" type="number" min="0" /></label>
+        <label>Inspections / audits<input id="perfInspections" type="number" min="0" /></label><label>Trainings / toolbox talks<input id="perfTrainings" type="number" min="0" /></label><label>Safety observations<input id="perfObservations" type="number" min="0" /></label><label>Worker consultations<input id="perfConsultations" type="number" min="0" /></label>
+      </div><div class="inline-actions"><button class="primary" id="savePerformance">Save monthly data</button><button class="secondary hidden" id="cancelPerformanceEdit">Cancel edit</button></div></section>
+      <div class="panel filter-bar"><select id="analyticsSiteFilter"><option value="">All projects / sites</option></select><select id="analyticsPeriodFilter"><option value="12">Last 12 months</option><option value="6">Last 6 months</option><option value="24">Last 24 months</option><option value="0">All periods</option></select><button class="secondary" id="refreshAnalytics">Apply filters</button></div>
+      <div class="dashboard-grid dashboard-grid-8">
+        <div class="metric-card static"><span>Hours worked</span><strong id="anaHours">0</strong><small>Filtered period</small></div><div class="metric-card static"><span>TRIR</span><strong id="anaTrir">0.00</strong><small id="anaTrirBasis">per 200,000 hours</small></div><div class="metric-card static"><span>LTIFR</span><strong id="anaLtifr">0.00</strong><small>Based on selected rate basis</small></div><div class="metric-card static"><span>Severity rate</span><strong id="anaSeverity">0.00</strong><small>Lost days / exposure hours</small></div>
+        <div class="metric-card static"><span>Near misses</span><strong id="anaNearMisses">0</strong><small>Leading learning opportunities</small></div><div class="metric-card static"><span>Inspections</span><strong id="anaInspections">0</strong><small>Field assurance activities</small></div><div class="metric-card static"><span>Training sessions</span><strong id="anaTrainings">0</strong><small>Competence activities</small></div><div class="metric-card static"><span>Observations</span><strong id="anaObservations">0</strong><small>Worker and supervisor engagement</small></div>
+      </div>
+      <div class="analytics-grid"><section class="panel chart-panel"><h2>Exposure and incident rates</h2><div id="chartRates" class="chart-box empty-chart">Add monthly performance data.</div></section><section class="panel chart-panel"><h2>Leading indicators</h2><div id="chartLeading" class="chart-box empty-chart">Add monthly performance data.</div></section><section class="panel chart-panel"><h2>Environmental trend</h2><div id="chartEnvironment" class="chart-box empty-chart">Add environmental data.</div></section><section class="panel chart-panel"><h2>Site comparison</h2><div id="chartSiteComparison" class="chart-box empty-chart">Add inspection and performance data.</div></section></div>
+      <div class="table-wrap panel"><table><thead><tr><th>#</th><th>Month / site</th><th>Hours / workforce</th><th>Recordables / LTI</th><th>Lost days</th><th>Near misses</th><th>Inspections</th><th>Training</th><th>Observations</th><th>Consultations</th><th>Manage</th></tr></thead><tbody id="performanceTableBody"></tbody></table></div>
+    </section>
+
+    <section class="page" id="page-public">
+      <div class="page-head public-admin-head"><div><span class="eyebrow">WORKER PARTICIPATION</span><h1>Public Hazard & Safety Reporting</h1><p>Create a no-login reporting route for workers, contractors, visitors and the public.</p></div><div class="head-actions"><button class="primary" data-print-ext="publicPoster">🖨 Print QR Poster</button></div></div>
+      <div class="public-layout">
+        <section class="panel public-qr-panel">
+          <h2>Public reporting link</h2><p>The generated link opens only the simple reporting form. Configure the company recipient email in Settings.</p>
+          <label>Public form URL<input id="publicUrl" readonly /></label><div class="qr-shell"><canvas id="publicQrCanvas" width="264" height="264" aria-label="Public reporting QR code"></canvas></div>
+          <div class="stack-actions"><button class="primary" id="generatePublicQr">Generate / refresh QR</button><button class="secondary" id="copyPublicLink">Copy link</button><button class="secondary" id="downloadPublicQr">Download QR PNG</button></div>
+          <p class="helper">This static community edition can prepare an email on the reporter’s device. Automatic cross-device submission and central notifications require a configured backend or approved form endpoint.</p>
+        </section>
+        <section class="panel public-form-card" id="publicReportFormCard">
+          <div class="public-form-brand"><span class="brand-mark">S</span><div><strong>Report a Safety Concern</strong><small>No login required</small></div></div>
+          <form id="publicReportForm">
+            <div class="form-grid two"><label>Report type<select id="pubType"><option>Hazard / Unsafe Condition</option><option>Unsafe Act / Behaviour</option><option>Near Miss</option><option>Environmental Concern</option><option>Welfare / Hygiene Concern</option><option>Positive Safety Observation</option><option>Complaint / Request</option></select></label><label>Urgency<select id="pubSeverity"><option>Low</option><option>Medium</option><option>High</option><option>Emergency</option></select></label><label>Project / site<input id="pubSite" /></label><label>Exact location<input id="pubLocation" /></label><label class="span-2">What did you see?<textarea id="pubDescription" rows="6" required></textarea></label><label>Your name or contact (optional)<input id="pubContact" /></label><label>Preferred language<select id="pubLanguage"><option>English</option><option>Arabic</option><option>Urdu</option><option>Hindi</option><option>Bengali</option><option>Other</option></select></label></div>
+            <label class="checkbox-inline consent-line"><input id="pubConsent" type="checkbox" /> I consent to the company using this information to investigate and address the safety concern.</label>
+            <button class="primary wide" type="submit">Submit / Prepare Report</button>
+          </form>
+          <div id="publicSubmitResult" class="submit-result" hidden></div>
+        </section>
+      </div>
+      <section class="panel public-inbox"><div class="panel-title-row"><div><h2>Local public-report inbox</h2><p>Reports submitted on this browser are shown here.</p></div><button class="secondary" data-export-registry="publicReports">⬇ CSV</button></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Reference / date</th><th>Type / urgency</th><th>Site / location</th><th>Description</th><th>Contact</th><th>Status</th><th>Manage</th></tr></thead><tbody id="publicReportTableBody"></tbody></table></div></section>
+    </section>
+
+
+    <section class="page" id="page-settings">
+      <div class="page-head"><div><span class="eyebrow">LOCAL CONFIGURATION</span><h1 data-i18n="companySetup">Company Setup & Data</h1><p>Brand reports with the user’s company details. Information remains in this browser.</p></div></div>
+
+      <div class="settings-grid">
+        <section class="panel">
+          <h2>Company profile for reports</h2>
+          <div class="logo-uploader">
+            <div class="logo-preview" id="companyLogoPreview"><span>No logo</span></div>
+            <div>
+              <label class="file-button">Upload company logo<input type="file" id="companyLogoInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" /></label>
+              <button class="secondary small" id="removeCompanyLogo">Remove logo</button>
+              <p class="helper">The logo is compressed locally and automatically included in PDF/print reports.</p>
+            </div>
+          </div>
+          <div class="form-grid two">
+            <label>Company name<input id="companyName" placeholder="Your company name" /></label>
+            <label>Document prefix<input id="companyPrefix" placeholder="HSE" maxlength="12" /></label>
+            <label class="span-2">Address / contact line<input id="companyAddress" placeholder="Optional company address, phone or website" /></label>
+            <label>Default project / site<input id="companyProject" /></label>
+            <label>Default preparer / inspector<input id="companyPreparedBy" /></label>
+            <label>Default revision<input id="companyRevision" value="00" /></label>
+            <label>Report paper size<select id="companyPaper"><option value="A4">A4</option><option value="Letter">Letter</option></select></label>
+          </div>
+          <button class="primary" id="saveCompany">Save company profile</button>
+        </section>
+
+        <section class="panel">
+          <h2>Backup and restore</h2>
+          <p>Export all locally stored SafeOS records, settings and company branding as one JSON backup.</p>
+          <div class="stack-actions">
+            <button class="secondary" id="exportBackup">⬇ Export complete backup</button>
+            <label class="file-button secondary-look">⬆ Import backup<input type="file" id="importBackup" accept="application/json" /></label>
+          </div>
+          <hr />
+          <h3>Data storage</h3>
+          <div class="storage-meter"><span id="storageText">Calculating...</span><div><i id="storageBar"></i></div></div>
+          <button class="danger-btn" id="clearAllData">Delete all local records and settings</button>
+          <p class="helper">This cannot be undone unless you exported a backup first.</p>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h2>SafeOS operating settings</h2>
+        <div class="form-grid three">
+          <label>Default public-report recipient email<input id="safeosPublicEmail" type="email" placeholder="safety@company.com" /></label>
+          <label>Incident-rate calculation basis<select id="safeosRateBasis"><option value="200000">200,000 hours</option><option value="1000000">1,000,000 hours</option></select></label>
+          <label>Warning window for expiry alerts<select id="safeosExpiryWindow"><option value="14">14 days</option><option value="30">30 days</option><option value="60">60 days</option><option value="90">90 days</option></select></label>
+          <label>Default country / jurisdiction<input id="safeosJurisdiction" placeholder="United Arab Emirates" /></label>
+          <label>Local user role<select id="safeosRole"><option>Administrator</option><option>HSE Manager</option><option>HSE Officer</option><option>Supervisor</option><option>Viewer</option></select></label>
+          <label>Dashboard target compliance %<input id="safeosComplianceTarget" type="number" min="1" max="100" value="90" /></label>
+        </div>
+        <button class="primary" id="saveSafeosConfig">Save SafeOS settings</button>
+        <p class="helper">The local role changes the working view only. True security, user authentication and approval permissions require a server-backed deployment.</p>
+      </section>
+
+      <section class="panel" id="deviceStoragePanel">
+        <div class="section-heading compact-heading"><div><span class="eyebrow">DEVICE STORAGE</span><h2>SafeOS folder connection</h2></div><span class="status-badge neutral" id="folderConnectionBadge">Not connected</span></div>
+        <p class="helper">On supported Chrome or Edge devices, select a parent folder once. SafeOS will create a <strong>SafeOS</strong> folder with module subfolders and mirror new records and reports there. Browsers that do not support folder access will use normal downloads.</p>
+        <div class="form-actions storage-actions">
+          <button class="primary" id="connectSafeosFolder">📁 Connect SafeOS Folder</button>
+          <button class="secondary" id="disconnectSafeosFolder">Disconnect</button>
+          <button class="secondary" id="backupSafeosData">⬇️ Full backup</button>
+          <label class="secondary file-button">⬆️ Restore backup<input id="restoreSafeosData" type="file" accept="application/json,.json" hidden></label>
+        </div>
+        <div class="info-grid storage-info">
+          <div><strong>Selected location</strong><p id="folderConnectionName">No folder selected</p></div>
+          <div><strong>Automatic structure</strong><p>Records, Reports and Attachments subfolders for each SafeOS module.</p></div>
+          <div><strong>Security</strong><p>Writes require explicit device permission and remain under the user’s control.</p></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Report preview rules</h2>
+        <div class="info-grid">
+          <div><strong>Included</strong><p>Company logo, company name, report title, reference, revision, generated date and user-entered HSE content.</p></div>
+          <div><strong>Excluded</strong><p>Creator contact details and initiative attribution are not included in PDF or printed reports.</p></div>
+          <div><strong>File names</strong><p>Exports use clean names based on company prefix, document type, reference or title, and date.</p></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <section id="printArea" class="print-area" aria-hidden="true">
+    <div class="print-header">
+      <div class="print-logo" id="printLogo"></div>
+      <div class="print-company">
+        <strong id="printCompanyName">Company Name</strong>
+        <span id="printCompanyAddress"></span>
+      </div>
+      <div class="print-meta">
+        <span id="printDocRef"></span><span id="printRevision"></span><span id="printGenerated"></span>
+      </div>
+    </div>
+    <div class="print-title"><h1 id="printTitle"></h1><p id="printSubtitle"></p></div>
+    <div id="printContent"></div>
+    <div class="print-footer"><span>Generated with SafeOS Community</span><span class="page-number"></span></div>
+  </section>
+
+  <script src="security.js"></script>
+  <script src="storage.js"></script>
+  <script src="qrcode-bundle.js"></script>
+  <script src="app.js"></script>
+  <script src="safeos.js"></script>
+  <script src="specialist-modules.js"></script>
+  <script src="v4-bootstrap.js"></script>
+</body>
+</html>
